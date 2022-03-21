@@ -1,6 +1,3 @@
-
-
-
 let resultados = document.querySelector("#resultados");
 let resultadosTexto = document.getElementById("#resultadosTexto");
 let formulario = document.querySelector("#formulario");
@@ -124,9 +121,6 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         sound.play();
     } else {
 
-
-
-
         // Captura de datos del formulario en objeto
 
         caso = {
@@ -184,9 +178,10 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
             egreso,
             cct,
         } = caso;
-        console.log(cct);
+
+        /* console.log(cct);
         console.log("ingreso", ingreso);
-        console.log("egreso", egreso);
+        console.log("egreso", egreso); */
 
         const diasMeses = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         let ingresoNum = new Date(ingreso);
@@ -197,15 +192,11 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         let antiguedadDias = Math.floor((egresoNumParse - ingresoNumParse) / (1000 * 60 * 60 * 24));
         let antiguedadAnios = Math.floor(antiguedadDias / 365);
         let antiguedadMeses = Math.floor((antiguedadDias % 365) / 30);
+
         let antiguedadDiasResto = Math.floor((antiguedadDias % 365) % 30);
-        let antigCalculo = antiguedadAnios;
-        
-
-
-
-
-        let indAntig = antigCalculo * mejorSalario;
-        let indPreav = salario;
+        let antigCalculo =+ antiguedadAnios;
+        //let indAntig = antigCalculo * mejorSalario;
+        let indPreav = 0;
         let diasVacaciones = 0;
         let periodoPrueba = false;
         let egresoMes = parseInt(egreso[5] + egreso[6]);
@@ -213,6 +204,18 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         let anioIngreso = parseInt(ingreso[0] + ingreso[1] + ingreso[2] + ingreso[3]);
         let anioEgreso = parseInt(egreso[0] + egreso[1] + egreso[2] + egreso[3]);
         let integracionMes = (((diasMeses[egresoMes - 1] - egresoDia) * (salario / 30)).toFixed(2) * 1);
+
+        // Uso de Luxon para fechas
+
+        let end = DateTime.fromISO(egreso);
+        let start = DateTime.fromISO(ingreso);
+        let diffInMonths = end.diff(start, 'months');
+        let diffInDays = end.diff(start, 'days');
+        let diffInYears = end.diff(start, 'years');
+        let luxonDias = Math.floor(diffInDays.days);
+        let luxonMeses = Math.floor(diffInMonths.months);
+        let luxonMesesF = luxonMeses % 12;
+        let luxonAnios = Math.floor(diffInYears.years);
 
 
         casoPrevio ? hayCasoPrevio = true : hayCasoPrevio = false; // asignación condicional de variables
@@ -223,46 +226,50 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         mejorSalario = mejorSalario * 1;
 
 
-        /* console.log(typeof(salario));
-        console.log(typeof(mejorSalario));
-        console.log(typeof(indAntig));
-        */
-
         // Modificadores según antiguedad. Cambia el monto de preaviso, y dias de vacaciones de acuerdo a la antiguedad.
 
         function modificadorAntig() {
             if (antiguedadAnios > 20) {
-                indPreav = +salario;
+                indPreav = salario * 2;
                 diasVacaciones = 35;
             }
 
             if ((antiguedadAnios > 10) && (antiguedadAnios <= 20)) {
                 diasVacaciones = 28;
-                indPreav = +salario;
+                indPreav = salario * 2;
             }
 
             if ((antiguedadAnios > 5) && (antiguedadAnios <= 10)) {
                 diasVacaciones = 21;
-                indPreav = +salario;
+                indPreav = salario * 2;
             }
 
             if ((antiguedadAnios <= 5) && (antiguedadAnios >= 1)) {
                 diasVacaciones = 14;
+                indPreav = salario;
             }
 
             if ((antiguedadAnios < 1) && (antiguedadDias >= 182)) {
                 diasVacaciones = 14;
+                indPreav = salario;
+
             }
 
-            if (antiguedadDias < 182) {
+            if ((antiguedadDias < 182) && (luxonMesesF >= 3)) {
                 diasVacaciones = Math.floor(antiguedadDias / 20);
+                indPreav = salario;
             }
 
-            if (antiguedadDias < 90) {
+            if (luxonMeses < 3) {
+                diasVacaciones = Math.floor(antiguedadDias / 20);
                 indPreav = salario / 2;
                 periodoPrueba = true;
+                integracionMes = 0;
             }
 
+            if (luxonMesesF >= 3) {
+                antigCalculo += 1;
+            }
 
         }
 
@@ -336,6 +343,12 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         let vacacionesPropLet = vacacionesProp();
 
 
+        // Definiciones posteriores a las funciones
+        let indAntig = antigCalculo * mejorSalario;
+        //indPreav += salario;
+
+
+
         // resultados en pagina con DOM
 
         let result1 = document.getElementById('result1');
@@ -354,6 +367,8 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         let result11 = document.getElementById("result11");
         let result12 = document.getElementById("result12");
 
+
+        
         result1.textContent = `De acuerdo con la informacion Ud. trabajó a las órdenes de su empleador durante ${antiguedadAnios} años, ${antiguedadMeses} meses y ${antiguedadDiasResto} días.`
         result2.textContent = `Su mejor salario fue de $ ${(mejorSalario*1).toFixed(2)}. Su salario habitual fue de $ ${(salario*1).toFixed(2)}.`
         result3.innerHTML = "<br><h3>Liquidación:<h3>";
@@ -382,8 +397,8 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
                     if (respuesta[i].id == cct) {
                         //console.log(respuesta[i].tope);
                         topeConvenio = respuesta[i].tope;
-                        console.log("Tope convenio> "+ topeConvenio);
-                        return respuesta[i].tope;
+                        console.log("Tope convenio> " + topeConvenio);
+                        //return respuesta[i].tope;
                         result12.textContent = `Disclaimer.
                         Tener presente que la base de cálculo de su indemnización por despido podría ser afectada por el tope establecido por el art. 245 de la LCT- 
                         Tope para el convenio ${respuesta[i].id} es de ${topeConvenio} para el año ${respuesta[i].anio} 
@@ -392,88 +407,68 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
                         `
                     }
                 }
-                //return;
-
-
-                //console.log(respuesta);
-                //return respuesta;
 
 
             } catch (error) {
                 console.log(error);
             }
         }
-        //const topeConvenio = await obtenerDatosApi();
-        
 
         if (cct != "Ninguno / No sé") {
 
-           let respuesta = obtenerDatosApi();
-           console.log(respuesta);
+            let respuesta = obtenerDatosApi();
+            console.log(respuesta);
 
         }
-        //console.log("Tope convenio> "+ topeConvenio);
 
 
-// Display en documento con evento click de enviar
+        // Display en documento con evento click de enviar
 
-document.getElementById("resultadosDiv").style.display = "inline";
-//result9.scrollIntoView(alignToTop);
-//resultadosTexto.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-resultados.scrollIntoView(true);
+        document.getElementById("resultadosDiv").style.display = "inline";
+        resultados.scrollIntoView(true);
 
 
-// OBJETO DE CONTROL que reune las variables utilizadas.
+        // OBJETO DE CONTROL que reune las variables utilizadas.
 
-objetoCaso = {
-    antiguedadDias: antiguedadDias,
-    antiguedadAnios: antiguedadAnios,
-    antiguedadMeses: antiguedadMeses,
-    ...caso, // uso del operador spread
-    diasTrabajadosAnioEgreso: diasTrabajadosAnioEgreso,
-    indAntig: indAntig,
-    indPreav: indPreav,
-    diasVacaciones: diasVacaciones,
-    periodoPrueba: periodoPrueba,
-    vacacionesPropLet: vacacionesPropLet,
-    hayCasoPrevio: hayCasoPrevio,
-    cct: cct,
+        objetoCaso = {
+            antiguedadDias: antiguedadDias,
+            antiguedadAnios: antiguedadAnios,
+            antiguedadMeses: antiguedadMeses,
+            ...caso, // uso del operador spread
+            diasTrabajadosAnioEgreso: diasTrabajadosAnioEgreso,
+            indAntig: indAntig,
+            indPreav: indPreav,
+            diasVacaciones: diasVacaciones,
+            periodoPrueba: periodoPrueba,
+            vacacionesPropLet: vacacionesPropLet,
+            hayCasoPrevio: hayCasoPrevio,
+            cct: cct,
 
-};
+        };
 
-console.log("objetoCaso"); console.log(objetoCaso);
+        console.log("objetoCaso");
+        console.log(objetoCaso);
 
-// Pruebas con Luxon
 
-let end = DateTime.fromISO(egreso);
-let start = DateTime.fromISO(ingreso);
 
-let diffInMonths = end.diff(start, 'months');
-let diffInDays = end.diff(start, 'days');
-let diffInYears = end.diff(start, 'years');
-//diffInMonths.toObject(); 
-let luxonDias = Math.floor(diffInDays.days);
-//let luxonDiasF = (luxonDias )
-let luxonMeses = Math.floor(diffInMonths.months);
-let luxonMesesF = luxonMeses % 12;
-let luxonAnios = Math.floor(diffInYears.years); 
-console.log("-------------------LUXON--------------------------"); 
-console.log("dias", luxonDias); 
-console.log("meses", luxonMeses);
-console.log("meses F", luxonMesesF);
-console.log("a;os", luxonAnios); 
-console.log("-------------------VainillaJS--------------------------"); 
-console.log("dias", antiguedadDiasResto); 
-console.log("egreso dia", egresoDia); 
-console.log("meses", antiguedadMeses); 
-console.log("a;os", antiguedadAnios);
-}
+
+        console.log("-------------------LUXON--------------------------");
+        console.log("dias", luxonDias);
+        console.log("meses", luxonMeses);
+        console.log("meses F", luxonMesesF);
+        console.log("a;os", luxonAnios);
+        console.log("-------------------VainillaJS--------------------------");
+        console.log("dias", antiguedadDiasResto);
+        console.log("egreso dia", egresoDia);
+        console.log("meses", antiguedadMeses);
+        console.log("a;os", antiguedadAnios);
+    }
 
 });
 
 
-        
- 
+
+
 
 
 
@@ -492,13 +487,6 @@ console.log("a;os", antiguedadAnios);
 
 // PROBLEMAS DETECTADOS:
 
-// Si el a;o de ingreso coincide con el de egreso, la informacion sobre dias trabajados el a;o de egreso es incorrecta porque debe descontar los dias no trabajados en ese a;o\
-//Corregido en 92/94
-
-
-// el conteo de meses a efectos de determinar periodo de prueba o fraccion mayor a 3 meses es falible porque toma 30 dias por mes en vez de ver en cada mes cuandos dias hay
-
-
 
 // formatear las cifras para que muestren divisor por miles con punto y decimales con coma
 
@@ -513,4 +501,3 @@ console.log("a;os", antiguedadAnios);
 // objetoCaso no esta siendo modificado. Tema de Scope. Consultar.
 
 // no me permite meter numeros con decimales en el form
-
