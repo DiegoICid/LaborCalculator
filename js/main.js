@@ -244,12 +244,17 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
                 indPreav = salario * 2;
             }
 
-            if ((antiguedadAnios <= 5) && (antiguedadAnios >= 1)) {
+            if ((antiguedadAnios == 5) && ((antiguedadDiasResto > 0) || (antiguedadMeses > 0))) { // CORRIJE SITUACIÓN SI ANTIG ES DE 5 AÑOS Y UN MES POR EJEMPLO
+                indPreav = salario * 2;
+                diasVacaciones = 21;
+
+            }
+            if ((antiguedadAnios < 5) && (antiguedadAnios >= 1)) {
                 diasVacaciones = 14;
                 indPreav = salario;
             }
 
-            if ((antiguedadAnios < 1) && (antiguedadDias >= 182)) {
+            if ((antiguedadAnios < 1) && (antiguedadDiasResto >= 182)) {
                 diasVacaciones = 14;
                 indPreav = salario;
 
@@ -345,9 +350,8 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
 
         // Definiciones posteriores a las funciones
         let indAntig = antigCalculo * mejorSalario;
-        //indPreav += salario;
-
-
+        let string = numeral(indAntig).format('$0,0.00');
+        console.log(string);
 
         // resultados en pagina con DOM
 
@@ -366,21 +370,25 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         //total.toFixed(2);
         let result11 = document.getElementById("result11");
         let result12 = document.getElementById("result12");
+        //let result13 = document.getElementById("result13");
 
-
+        function formatNum(num) {
+            return numeral(num).format('$0,0.00');
+        }
         
         result1.textContent = `De acuerdo con la informacion Ud. trabajó a las órdenes de su empleador durante ${antiguedadAnios} años, ${antiguedadMeses} meses y ${antiguedadDiasResto} días.`
-        result2.textContent = `Su mejor salario fue de $ ${(mejorSalario*1).toFixed(2)}. Su salario habitual fue de $ ${(salario*1).toFixed(2)}.`
+        result2.textContent = `Su mejor salario fue de ${numeral((mejorSalario*1).toFixed(2)).format('$0,0.00')}. Su salario habitual fue de $ ${(salario*1).toFixed(2)}.`
         result3.innerHTML = "<br><h3>Liquidación:<h3>";
-        result4.textContent = `Indemnización por antigüedad:    $${(indAntig*1).toFixed(2)}.-`
-        result5.textContent = `Vacaciones proporcionales (año de egreso):   $ ${(vacacionesPropLet).toFixed(2)}.-`
-        result6.textContent = `SAC por Vacaciones proporcionales (año de egreso):    $ ${(vacacionesPropLet/12).toFixed(2)}.-`
-        result7.textContent = `Integracion del mes de despido:    $ ${(integracionMes*1).toFixed(2)}.-`
-        result8.textContent = `SAC por Integracion del mes de despido:    $ ${(integracionMes/12).toFixed(2)}.-`
-        result9.textContent = `Indemnización por preaviso:    $ ${(indPreav*1).toFixed(2)}.-`
-        result10.textContent = `SAC por Indemnización por preaviso:    $ ${(indPreav/12).toFixed(2)}.-`
-        result11.textContent = `TOTAL:    $ ${total}.-`
-        result12.textContent = `Disclaimer.-`
+        result4.textContent = `Indemnización por antigüedad:   ${numeral((indAntig*1).toFixed(2)).format('$0,0.00')}.-`
+        result5.textContent = `Vacaciones proporcionales (año de egreso):   ${formatNum((vacacionesPropLet).toFixed(2))}.-`
+        result6.textContent = `SAC por Vacaciones proporcionales (año de egreso):    ${formatNum((vacacionesPropLet/12).toFixed(2))}.-`
+        result7.textContent = `Integracion del mes de despido:    ${formatNum((integracionMes*1).toFixed(2))}.-`
+        result8.textContent = `SAC por Integracion del mes de despido:    ${formatNum((integracionMes/12).toFixed(2))}.-`
+        result9.textContent = `Indemnización por preaviso:    ${formatNum((indPreav*1).toFixed(2))}.-`
+        result10.textContent = `SAC por Indemnización por preaviso:    ${formatNum((indPreav/12).toFixed(2))}.-`
+        result11.textContent = `TOTAL:    ${formatNum(total)}.-`
+        result12.textContent = `Los montos indicados son estimativos y podrian variar por diversas circunstancias. No se incluyen otros conceptos pagaderos en liquidación final no indemnizatorios, tales como días trabajados. No se incluyen vacaciones de período anterior no gozadas. Tener presente que la base de cálculo de la indemnización por antigüedad puede ser impactada por topes de convenio, o incrementarse por incidencia de bono anual u otro tipo de conceptos. No se incluyen multas. Consulte un abogado laboralista. `
+        //result13.textContent = `Los montos indicados son estimativos y podrian variar por diversas circunstancias. No se incluyen otros conceptos pagaderos en liquidación final no indemnizatorios, tales como días trabajados. No se incluyen vacaciones de período anterior no gozadas. Tener presente que la base de cálculo de la indemnización por antigüedad puede ser impactada por topes de convenio, o incrementarse por incidencia de bono anual u otro tipo de conceptos. No se incluyen multas. Consulte un abogado laboralista.-`
 
 
         // funcion fetch para datos de tope de convenio
@@ -399,12 +407,8 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
                         topeConvenio = respuesta[i].tope;
                         console.log("Tope convenio> " + topeConvenio);
                         //return respuesta[i].tope;
-                        result12.textContent = `Disclaimer.
-                        Tener presente que la base de cálculo de su indemnización por despido podría ser afectada por el tope establecido por el art. 245 de la LCT- 
-                        Tope para el convenio ${respuesta[i].id} es de ${topeConvenio} para el año ${respuesta[i].anio} 
-                        
-                        
-                        `
+                        result12.textContent += `Tener presente que la base de cálculo de su indemnización por despido podría ser afectada por el tope establecido por el art. 245 de la LCT- 
+                        Tope para el convenio ${respuesta[i].id} es de ${formatNum(topeConvenio)} para el año ${respuesta[i].anio}.`
                     }
                 }
 
@@ -451,7 +455,7 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
 
 
 
-
+        // de control
         console.log("-------------------LUXON--------------------------");
         console.log("dias", luxonDias);
         console.log("meses", luxonMeses);
@@ -473,31 +477,3 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// PROBLEMAS DETECTADOS:
-
-
-// formatear las cifras para que muestren divisor por miles con punto y decimales con coma
-
-
-
-// en periodo de prueba esta pagando integracion y sac, ver
-
-
-
-// funcion modificadora segun antig no modifica preaviso si 5 anios y 1 mes por ejemplo
-
-// objetoCaso no esta siendo modificado. Tema de Scope. Consultar.
-
-// no me permite meter numeros con decimales en el form

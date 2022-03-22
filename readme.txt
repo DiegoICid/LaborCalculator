@@ -1,26 +1,44 @@
-Desafio complementario "Optimizando el desafio final"
+Curso de JavaScript. Entrega final. 
 
-Operador ternario y asignacion condicional de variables: linea 121.
-Destructuring: linea 84 y siguientes.
-Operador Spread: linea 280 (usado para clonar objeto dentro de otro)
+Proyecto: Calculadora online de indemnización laboral conforme normativa Argentina.
 
-Desafio "Incorporando librerias"
+Aplicación que captura datos del usuario y calcula la indemnización que corresonde por aplicación de la Ley de Contrato de Trabajo.
 
-Alertas con toastify: linea 196 y siguientes.
-Calculo de periodos con Luxon: linea 293 y siguientes. Por ahora, uso Luxon solamente para control, falta implementarlo como método único para cálculo de períodos. Resuelve uno de los problemas detectados.
+Requisitos mínimos:
+
+* Objetos y Arrays. Métodos de arrays.
+    -> Los dato del usuario son almacenados en un objeto.
+    -> Existe un objeto de control que recopila todas las variables utilizadas en los cálculos.
+    -> Se usan los métodos spread y deconstructing sobre los objetos.
+    -> Se utiliza un array de objetos (el JSON) y un array de numeros.
+
+* Funciones y condicionales.
+    -> La app utiliza distintas 
+
+* Generación del DOM en forma dinámica. Eventos.
+    -> Tras enviar los datos, se muestra la liquidación en el documento HTML creando contenido a partir de los procesos que hace la app.
+    -> Se interpretan distintos eventos, principalmente el "submit" y el "keydown".
+    -> Scrolleo dinámico con uso de "scrollIntoView".
+
+* Sintaxis avanzada.
+    -> Uso de operadores/ funcionalidades tales como spread, destructuring, operador ternario, asignación condicional de variables. 
+
+* Al menos una librería de uso relevante para el proyecto.
+    -> Se utilizan las siguientes librerías:
+        -> Luxon: para el cálculo de períodos de tiempo (antigüedad laboral expresada en años, meses, días).
+        -> Toastify: alertas en caso de faltar datos o ingresar datos incorrectos.
+        -> Howler: efectos de sonido que acompañan las alertas en caso de errores.
+        -> Numeral: formato de números tipo moneda con signo y decimales.
+
+* Promesas con Fetch.
+    -> Uso de función asincrónica para recuperar datos de JSON.
+
+* Carga de datos desde un JSON o desde una API externa.
+    -> Carga de información sobre tope de convenios colectivo de trabajo según lo indicado por el usuario, en un archivo JSON local.
 
 
-Adicionales agregados tras entrega (a partir de 7 de marzo):
-
-Boton que permite borrar datos de caso anterior y vuelve a los placeholders adicionales.
-Agregado resultados.scrollIntoView(true); para que scrolee hasta los resutlados al enviar formulario
-Agregado inicio.scrollIntoView(true); para que scrolee hasta el inicio cuando se aprieta el boton de borrar datos anteriores.
-
-
-Agregado un if else para que no ejecute si no est[an todos los datos]. Dispara un toastify si falta algun dato. De lo contrario ejecuta el resto del script
-
-Agregada la libreria Howler para reproducir sonidos junto con los Alertas
-
-Fetch toma datos del json de topes de convenios colectivos y completa el comentario en disclaimer con el tope aplicable.
+* Otros agregados:
+    -> Uso de localStorage para almacenar los datos de consultas anteriores, los que son incorporados como placeholders de los campos relevantes y se utilizan en la nueva consulta de no cambiarse.
+    -> Botón de borrado del localStorage.
 
 

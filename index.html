@@ -53,11 +53,11 @@
       <input type="date" class="form-control" id="fechaEgreso" placeholder="">
       <br>
       <label for="sueldo" name="Sueldo">Ingrese el salario más alto del último año trabajado.</label>
-      <input type="number" class="form-control" id="mejorSalario"
+      <input type="number" step=".01" class="form-control" id="mejorSalario"
         placeholder="No utilice signo $. No utilice puntos para separar miles. Utilice punto para los centavos. Ejemplo: 52000.50">
         <br>
       <label for="sueldo" name="Sueldo">Ingrese el salario habitual.</label>
-      <input type="number" class="form-control" id="salario"
+      <input type="number" step=".01" class="form-control" id="salario"
         placeholder="No utilice signo $. No utilice puntos para separar miles. Utilice punto para los centavos. Ejemplo: 52000.50">
 
         <label for="cct">Convenio colectivo aplicable en su empresa:</label> <br>
@@ -99,6 +99,7 @@
         <p id="result10"></p>
         <p id="result11"></p>
         <p id="result12"></p>
+        <!-- <p id="result13"></p> -->
         <!-- <input type="submit" value="Enviar liquidacion a mi mail" id="submit" /> -->
       </div>
     </div>
@@ -123,6 +124,8 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <!-- Howler script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Numeral.js script -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
   <!-- Core theme JS-->
   <script src="./js/main.js"></script>
 </body>

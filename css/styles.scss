@@ -22,3 +22,19 @@
     padding-left: 10%;
     padding-right: 10%;
 }
+
+@media (max-width: 400px) {
+    
+    #resultados {
+        margin-top: 10%;
+    }
+    
+  }
+
+  @media (max-width: 350px) {
+    
+    #resultados {
+        margin-top: 20%;
+    }
+    
+  }
