@@ -29,6 +29,7 @@ Requisitos mínimos:
         -> Toastify: alertas en caso de faltar datos o ingresar datos incorrectos.
         -> Howler: efectos de sonido que acompañan las alertas en caso de errores.
         -> Numeral: formato de números tipo moneda con signo y decimales.
+        -> Bootstrap: para el diseño web.
 
 * Promesas con Fetch.
     -> Uso de función asincrónica para recuperar datos de JSON.

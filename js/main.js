@@ -74,19 +74,18 @@ let borrarDatos = document.getElementById("borrarDatos");
 borrarDatos.onclick = () => {
     if (casoPrevio) {
         localStorage.removeItem("caso");
-        /*  document.getElementById("email").placeholder = "nombre@ejemplo.com";
+         /* document.getElementById("email").placeholder = "nombre@ejemplo.com";
          document.getElementById("mejorSalario").placeholder = "No utilice signo $. No utilice puntos para separar miles. Utilice punto para los centavos. Ejemplo: 52000.50";
          document.getElementById("salario").placeholder = "No utilice signo $. No utilice puntos para separar miles. Utilice punto para los centavos. Ejemplo: 52000.50";
          document.getElementById("fechaIngreso").placeholder = "";
          document.getElementById("fechaEgreso").placeholder = ""; */
-        /*  casoPrevio = {
+         /* casoPrevio = {
              email: undefined,
              mejorSalario: undefined,
              salario: undefined,
              ingreso: undefined,
              egreso: undefined,
          }; */
-        //inicio.scrollIntoView(true);
         window.location.reload();
 
     } else {
@@ -108,9 +107,11 @@ borrarDatos.onclick = () => {
 formulario.addEventListener("submit", function () { // puede ponerse function(e). la e sirve para despues poner e.preventDefault(); que lo que haces es prevenir el comportamiento default del submit
     console.log("Evento submit capturado");
 
-    if (((document.querySelector("#email").value == "") && (!casoPrevio.email)) || ((document.querySelector("#mejorSalario").value == "") && (!casoPrevio.mejorSalario)) || ((document.querySelector("#salario").value == "") && (!casoPrevio.salario)) || ((document.querySelector("#fechaIngreso").value == "") && (!casoPrevio.ingreso)) || ((document.querySelector("#fechaEgreso").value == "") && (!casoPrevio.egreso)))
+    console.log(document.querySelector("#email").value.length)
+    if (((document.querySelector("#email").value == "") && (!casoPrevio.email)) || ((document.querySelector("#mejorSalario".value == 0)) && (!casoPrevio.mejorSalario)) || ((document.querySelector("#salario").value == 0) && (!casoPrevio.salario)) || ((document.querySelector("#fechaIngreso". value == "")) && (!casoPrevio.ingreso)) || ((document.querySelector("#fechaEgreso").value == "") && (!casoPrevio.egreso)))
 
     {
+        console.log("no hay datos");
         Toastify({
 
             text: "Debe ingresar todos los datos requeridos.",
@@ -119,6 +120,8 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
 
         }).showToast();
         sound.play();
+        return false;
+        
     } else {
 
         // Captura de datos del formulario en objeto
@@ -373,13 +376,13 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         //let result13 = document.getElementById("result13");
 
         function formatNum(num) {
-            return numeral(num).format('$0,0.00');
+            return numeral(num).format('$ 0,0.00.-');
         }
         
         result1.textContent = `De acuerdo con la informacion Ud. trabajó a las órdenes de su empleador durante ${antiguedadAnios} años, ${antiguedadMeses} meses y ${antiguedadDiasResto} días.`
-        result2.textContent = `Su mejor salario fue de ${numeral((mejorSalario*1).toFixed(2)).format('$0,0.00')}. Su salario habitual fue de $ ${(salario*1).toFixed(2)}.`
+        result2.textContent = `Su mejor salario fue de ${numeral((mejorSalario*1).toFixed(2)).format('$ 0,0.00')}. Su salario habitual fue de ${formatNum((salario*1).toFixed(2))}.`
         result3.innerHTML = "<br><h3>Liquidación:<h3>";
-        result4.textContent = `Indemnización por antigüedad:   ${numeral((indAntig*1).toFixed(2)).format('$0,0.00')}.-`
+        result4.textContent = `Indemnización por antigüedad:   ${numeral((indAntig*1).toFixed(2)).format('$ 0,0.00')}.-`
         result5.textContent = `Vacaciones proporcionales (año de egreso):   ${formatNum((vacacionesPropLet).toFixed(2))}.-`
         result6.textContent = `SAC por Vacaciones proporcionales (año de egreso):    ${formatNum((vacacionesPropLet/12).toFixed(2))}.-`
         result7.textContent = `Integracion del mes de despido:    ${formatNum((integracionMes*1).toFixed(2))}.-`
@@ -469,11 +472,4 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
     }
 
 });
-
-
-
-
-
-
-
 
