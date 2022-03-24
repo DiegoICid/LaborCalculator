@@ -74,18 +74,6 @@ let borrarDatos = document.getElementById("borrarDatos");
 borrarDatos.onclick = () => {
     if (casoPrevio) {
         localStorage.removeItem("caso");
-         /* document.getElementById("email").placeholder = "nombre@ejemplo.com";
-         document.getElementById("mejorSalario").placeholder = "No utilice signo $. No utilice puntos para separar miles. Utilice punto para los centavos. Ejemplo: 52000.50";
-         document.getElementById("salario").placeholder = "No utilice signo $. No utilice puntos para separar miles. Utilice punto para los centavos. Ejemplo: 52000.50";
-         document.getElementById("fechaIngreso").placeholder = "";
-         document.getElementById("fechaEgreso").placeholder = ""; */
-         /* casoPrevio = {
-             email: undefined,
-             mejorSalario: undefined,
-             salario: undefined,
-             ingreso: undefined,
-             egreso: undefined,
-         }; */
         window.location.reload();
 
     } else {
@@ -133,7 +121,6 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
             ingreso: document.querySelector("#fechaIngreso").value,
             egreso: document.querySelector("#fechaEgreso").value,
             cct: document.querySelector("#cct").value,
-            //nombre: prompt("Ingrese su nombre")
         };
 
 
@@ -181,10 +168,6 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
             egreso,
             cct,
         } = caso;
-
-        /* console.log(cct);
-        console.log("ingreso", ingreso);
-        console.log("egreso", egreso); */
 
         const diasMeses = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         let ingresoNum = new Date(ingreso);
@@ -369,11 +352,8 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         let result9 = document.getElementById('result9');
         let result10 = document.getElementById('result10');
         let total = parseInt(indAntig) + parseInt(vacacionesPropLet) + parseInt(vacacionesPropLet / 12) + parseInt(integracionMes) + parseInt(integracionMes / 12) + parseInt(indPreav) + parseInt(indPreav / 12);
-        //total = total * 1;
-        //total.toFixed(2);
         let result11 = document.getElementById("result11");
         let result12 = document.getElementById("result12");
-        //let result13 = document.getElementById("result13");
 
         function formatNum(num) {
             return numeral(num).format('$ 0,0.00.-');
@@ -391,25 +371,17 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
         result10.textContent = `SAC por Indemnización por preaviso:    ${formatNum((indPreav/12).toFixed(2))}.-`
         result11.textContent = `TOTAL:    ${formatNum(total)}.-`
         result12.textContent = `Los montos indicados son estimativos y podrian variar por diversas circunstancias. No se incluyen otros conceptos pagaderos en liquidación final no indemnizatorios, tales como días trabajados. No se incluyen vacaciones de período anterior no gozadas. Tener presente que la base de cálculo de la indemnización por antigüedad puede ser impactada por topes de convenio, o incrementarse por incidencia de bono anual u otro tipo de conceptos. No se incluyen multas. Consulte un abogado laboralista. `
-        //result13.textContent = `Los montos indicados son estimativos y podrian variar por diversas circunstancias. No se incluyen otros conceptos pagaderos en liquidación final no indemnizatorios, tales como días trabajados. No se incluyen vacaciones de período anterior no gozadas. Tener presente que la base de cálculo de la indemnización por antigüedad puede ser impactada por topes de convenio, o incrementarse por incidencia de bono anual u otro tipo de conceptos. No se incluyen multas. Consulte un abogado laboralista.-`
-
 
         // funcion fetch para datos de tope de convenio
-
 
         const obtenerDatosApi = async () => {
             try {
                 let apiConvenios = await fetch("./assets/datos.json");
                 let respuesta = await apiConvenios.json();
-                //console.log(respuesta);
-                //console.log(usarResp(respuesta));
-                //usarResp(respuesta);
                 for (let i = 0; i < respuesta.length; i += 1) {
                     if (respuesta[i].id == cct) {
-                        //console.log(respuesta[i].tope);
                         topeConvenio = respuesta[i].tope;
                         console.log("Tope convenio> " + topeConvenio);
-                        //return respuesta[i].tope;
                         result12.textContent += `Tener presente que la base de cálculo de su indemnización por despido podría ser afectada por el tope establecido por el art. 245 de la LCT- 
                         Tope para el convenio ${respuesta[i].id} es de ${formatNum(topeConvenio)} para el año ${respuesta[i].anio}.`
                     }
@@ -427,7 +399,6 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
             console.log(respuesta);
 
         }
-
 
         // Display en documento con evento click de enviar
 
@@ -453,22 +424,7 @@ formulario.addEventListener("submit", function () { // puede ponerse function(e)
 
         };
 
-        console.log("objetoCaso");
-        console.log(objetoCaso);
 
-
-
-        // de control
-        console.log("-------------------LUXON--------------------------");
-        console.log("dias", luxonDias);
-        console.log("meses", luxonMeses);
-        console.log("meses F", luxonMesesF);
-        console.log("a;os", luxonAnios);
-        console.log("-------------------VainillaJS--------------------------");
-        console.log("dias", antiguedadDiasResto);
-        console.log("egreso dia", egresoDia);
-        console.log("meses", antiguedadMeses);
-        console.log("a;os", antiguedadAnios);
     }
 
 });
